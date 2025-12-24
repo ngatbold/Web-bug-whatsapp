@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>NgatVidDownloader</title>
+
+<style>
+:root{
+  --glass: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.25);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0b0b0b;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* BACKGROUND (NO BLUR) */
+#bgPreview{
+  position:fixed;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  filter:none; /* FOTO ASLI */
+  z-index:-1;
+  opacity:0;
+  transition:0.5s;
+}
+
+/* CARD */
+.box{
+  width:90%;
+  max-width:420px;
+  padding:25px;
+  border-radius:20px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  backdrop-filter:blur(15px);
+  box-shadow:0 0 40px rgba(0,0,0,0.6);
+}
+
+.box h1{
+  text-align:center;
+  margin-bottom:20px;
+  font-size:22px;
+  letter-spacing:1px;
+}
+
+input, select, button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border-radius:12px;
+  border:none;
+  outline:none;
+  font-size:15px;
+}
+
+input, select{
+  background:rgba(0,0,0,0.4);
+  color:white;
+}
+
+button{
+  background:linear-gradient(135deg,#ff0050,#ff7a00);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+
+button:hover{
+  transform:scale(1.03);
+}
+
+/* HIDDEN */
+.hidden{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div id="bgPreview"></div>
+
+<!-- HIDDEN SETTINGS -->
+<input id="siteName" class="hidden" value="Downloader Pro">
+<input type="file" id="bgUpload" class="hidden" accept="image/*">
+<input type="text" id="bgLink" class="hidden">
+
+<div class="box">
+  <h1>Video Downloader</h1>
+
+  <select id="platform">
+    <option value="tiktok">TikTok</option>
+    <option value="youtube">YouTube</option>
+  </select>
+
+  <input type="text" id="videoLink" placeholder="Tempel link video di sini">
+
+  <button onclick="download()">Download Video</button>
+</div>
+
+<script>
+// ================= BACKGROUND =================
+const bgPreview = document.getElementById("bgPreview");
+
+// LOAD SAVED BACKGROUND ATAU DEFAULT FOTO KAU
+const savedBg = localStorage.getItem("customBg");
+if(savedBg){
+  bgPreview.style.backgroundImage = `url(${savedBg})`;
+  bgPreview.style.opacity = "1";
+}else{
+  // DEFAULT BACKGROUND (FOTO KAU)
+  bgPreview.style.backgroundImage =
+    "url('https://files.catbox.moe/q3k7nf.jpg')";
+  bgPreview.style.opacity = "1";
+}
+
+// ================= DOWNLOAD =================
+function download(){
+  const link = document.getElementById('videoLink').value.trim();
+  const platform = document.getElementById('platform').value;
+
+  if(!link){
+    alert("Masukkan link video dulu lek");
+    return;
+  }
+
+  let url = "";
+
+  if(platform === "tiktok"){
+    url = "https://ttsave.app/download?url=" + encodeURIComponent(link);
+  }else{
+    url = "https://ssyoutube.com/watch?v=" + encodeURIComponent(link);
+  }
+
+  window.open(url,"_blank");
+}
+</script>
+
+</body>
+</html>
